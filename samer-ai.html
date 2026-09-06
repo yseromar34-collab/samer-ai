@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Samer AI — بوتات ذكاء اصطناعي للشركات</title>
+<meta name="description" content="بوتات ذكاء اصطناعي تخدم عملاءك 24 ساعة على تيليغرام وواتساب. جرب مجاناً اليوم.">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0f1e;
+    --surface: #111827;
+    --border: #1f2d45;
+    --accent: #3b82f6;
+    --accent2: #06b6d4;
+    --text: #f1f5f9;
+    --muted: #94a3b8;
+    --radius: 16px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Cairo', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 40px;
+    background: rgba(10,15,30,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo {
+    font-size: 1.4rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+  }
+
+  .nav-cta {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-family: 'Cairo', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .nav-cta:hover { opacity: 0.85; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 120px 24px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(59,130,246,0.15) 0%, transparent 70%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    background: rgba(59,130,246,0.12);
+    border: 1px solid rgba(59,130,246,0.3);
+    color: var(--accent2);
+    padding: 6px 18px;
+    border-radius: 100px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 28px;
+  }
+
+  h1 {
+    font-size: clamp(2.2rem, 6vw, 4rem);
+    font-weight: 900;
+    line-height: 1.2;
+    max-width: 720px;
+    margin-bottom: 20px;
+    letter-spacing: -1px;
+  }
+
+  h1 span {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero-sub {
+    font-size: 1.15rem;
+    color: var(--muted);
+    max-width: 520px;
+    margin-bottom: 40px;
+  }
+
+  .hero-btns {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 10px;
+    font-family: 'Cairo', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform 0.2s, opacity 0.2s;
+  }
+  .btn-primary:hover { transform: translateY(-2px); opacity: 0.9; }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 14px 32px;
+    border-radius: 10px;
+    font-family: 'Cairo', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: border-color 0.2s;
+  }
+  .btn-ghost:hover { border-color: var(--accent); }
+
+  /* DEMO CHAT */
+  .demo {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    max-width: 420px;
+    margin: 60px auto 0;
+    overflow: hidden;
+    text-align: right;
+  }
+
+  .demo-header {
+    background: var(--border);
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+
+  .demo-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .demo-body { padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+
+  .msg {
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    max-width: 85%;
+    line-height: 1.5;
+  }
+
+  .msg-user {
+    background: var(--accent);
+    color: #fff;
+    align-self: flex-start;
+    border-bottom-left-radius: 4px;
+  }
+
+  .msg-bot {
+    background: var(--border);
+    color: var(--text);
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
+  }
+
+  /* STATS */
+  .stats {
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    flex-wrap: wrap;
+    padding: 60px 24px;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .stat { text-align: center; }
+  .stat-num {
+    font-size: 2.4rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .stat-label { color: var(--muted); font-size: 0.9rem; margin-top: 4px; }
+
+  /* SERVICES */
+  .section {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 80px 24px;
+  }
+
+  .section-title {
+    text-align: center;
+    font-size: 1.9rem;
+    font-weight: 900;
+    margin-bottom: 12px;
+    letter-spacing: -0.5px;
+  }
+
+  .section-sub {
+    text-align: center;
+    color: var(--muted);
+    margin-bottom: 50px;
+    font-size: 1rem;
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .card:hover { border-color: var(--accent); transform: translateY(-4px); }
+
+  .card-icon {
+    font-size: 2rem;
+    margin-bottom: 14px;
+  }
+
+  .card h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .card p { color: var(--muted); font-size: 0.9rem; }
+
+  /* PRICING */
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  .price-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px 28px;
+    text-align: center;
+    position: relative;
+  }
+
+  .price-card.featured {
+    border-color: var(--accent);
+    background: rgba(59,130,246,0.06);
+  }
+
+  .price-badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--accent);
+    color: #fff;
+    padding: 4px 16px;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .price-name { font-weight: 700; font-size: 1rem; color: var(--muted); margin-bottom: 12px; }
+
+  .price-amount {
+    font-size: 2.4rem;
+    font-weight: 900;
+    margin-bottom: 4px;
+  }
+
+  .price-period { color: var(--muted); font-size: 0.85rem; margin-bottom: 24px; }
+
+  .price-features { list-style: none; text-align: right; margin-bottom: 28px; }
+  .price-features li {
+    padding: 7px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+  .price-features li::before { content: '✓ '; color: var(--accent2); font-weight: 700; }
+
+  /* CTA SECTION */
+  .cta-section {
+    text-align: center;
+    padding: 80px 24px;
+    background: linear-gradient(135deg, rgba(59,130,246,0.08), rgba(6,182,212,0.08));
+    border-top: 1px solid var(--border);
+  }
+
+  .cta-section h2 { font-size: 2rem; font-weight: 900; margin-bottom: 14px; }
+  .cta-section p { color: var(--muted); margin-bottom: 32px; }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 30px 24px;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  @media (max-width: 600px) {
+    nav { padding: 14px 20px; }
+    .stats { gap: 30px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Samer AI</div>
+  <a href="https://t.me/YOUR_BOT" class="nav-cta">جرب مجاناً</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-badge">🤖 مدعوم بأحدث نماذج الذكاء الاصطناعي</div>
+  <h1>بوت ذكي يخدم<br><span>عملاءك 24 ساعة</span></h1>
+  <p class="hero-sub">بدون موظفين، بدون انتظار. بوت AI يرد على عملاءك فوراً بالعربي على تيليغرام وواتساب.</p>
+  <div class="hero-btns">
+    <a href="https://t.me/YOUR_BOT" class="btn-primary">جرب البوت مجاناً</a>
+    <a href="#pricing" class="btn-ghost">شوف الأسعار</a>
+  </div>
+
+  <div class="demo">
+    <div class="demo-header">
+      <div class="demo-dot"></div>
+      My AI Assistant · بوت
+    </div>
+    <div class="demo-body">
+      <div class="msg msg-user">كم سعر الشحن لدمشق؟</div>
+      <div class="msg msg-bot">مرحباً! 👋 الشحن لدمشق يستغرق 2-3 أيام بسعر 5$ فقط. هل تريد تأكيد طلبك؟</div>
+      <div class="msg msg-user">نعم أريد الطلب</div>
+      <div class="msg msg-bot">ممتاز! سأحول طلبك للفريق الآن. سيتواصل معك خلال ساعة ✅</div>
+    </div>
+  </div>
+</section>
+
+<div class="stats">
+  <div class="stat">
+    <div class="stat-num">24/7</div>
+    <div class="stat-label">خدمة بلا توقف</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">&lt;3ث</div>
+    <div class="stat-label">سرعة الرد</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">100%</div>
+    <div class="stat-label">عربي أصيل</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">0$</div>
+    <div class="stat-label">للتجربة الأولى</div>
+  </div>
+</div>
+
+<section class="section">
+  <h2 class="section-title">ماذا يقدر البوت يسوي؟</h2>
+  <p class="section-sub">كل ما يحتاجه عملاؤك، في مكان واحد</p>
+  <div class="cards">
+    <div class="card">
+      <div class="card-icon">💬</div>
+      <h3>رد فوري على الأسئلة</h3>
+      <p>يجيب على أسئلة العملاء الشائعة بدقة واحترافية على مدار الساعة</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">📅</div>
+      <h3>حجز المواعيد</h3>
+      <p>يحجز المواعيد تلقائياً ويرسل تذكيرات للعملاء بدون تدخل منك</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🛒</div>
+      <h3>استقبال الطلبات</h3>
+      <p>يسجل طلبات العملاء ويرسلها لك فوراً منظمة وجاهزة للتنفيذ</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🌍</div>
+      <h3>متعدد اللغات</h3>
+      <p>يكتشف لغة العميل تلقائياً ويرد بنفس اللغة عربي أو إنجليزي</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">📊</div>
+      <h3>تقارير يومية</h3>
+      <p>يرسل لك ملخصاً يومياً بكل المحادثات والطلبات والأسئلة الشائعة</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">⚡</div>
+      <h3>إعداد خلال 24 ساعة</h3>
+      <p>نجهز بوتك المخصص ونسلمه جاهزاً للعمل خلال يوم واحد فقط</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="pricing" style="padding-top: 0;">
+  <h2 class="section-title">الأسعار</h2>
+  <p class="section-sub">بدء بسيط، نمو مضمون</p>
+  <div class="pricing-grid">
+    <div class="price-card">
+      <div class="price-name">أساسي</div>
+      <div class="price-amount">$150</div>
+      <div class="price-period">إعداد + $50/شهر</div>
+      <ul class="price-features">
+        <li>رد تلقائي على الأسئلة</li>
+        <li>تيليغرام أو واتساب</li>
+        <li>دعم تقني</li>
+        <li>تخصيص الشخصية</li>
+      </ul>
+      <a href="https://t.me/YOUR_USERNAME" class="btn-ghost" style="display:block; text-align:center;">ابدأ الآن</a>
+    </div>
+    <div class="price-card featured">
+      <div class="price-badge">الأكثر طلباً</div>
+      <div class="price-name">احترافي</div>
+      <div class="price-amount">$400</div>
+      <div class="price-period">إعداد + $100/شهر</div>
+      <ul class="price-features">
+        <li>كل مزايا الأساسي</li>
+        <li>حجز مواعيد تلقائي</li>
+        <li>استقبال الطلبات</li>
+        <li>تقارير أسبوعية</li>
+        <li>تيليغرام + واتساب</li>
+      </ul>
+      <a href="https://t.me/YOUR_USERNAME" class="btn-primary" style="display:block; text-align:center;">ابدأ الآن</a>
+    </div>
+    <div class="price-card">
+      <div class="price-name">متكامل</div>
+      <div class="price-amount">$800</div>
+      <div class="price-period">إعداد + $200/شهر</div>
+      <ul class="price-features">
+        <li>كل مزايا الاحترافي</li>
+        <li>متعدد اللغات</li>
+        <li>تكامل مع أنظمتك</li>
+        <li>أولوية الدعم</li>
+        <li>تقارير يومية</li>
+      </ul>
+      <a href="https://t.me/YOUR_USERNAME" class="btn-ghost" style="display:block; text-align:center;">تواصل معنا</a>
+    </div>
+  </div>
+</section>
+
+<div class="cta-section">
+  <h2>جاهز تبدأ؟</h2>
+  <p>جرب البوت مجاناً الآن ولا التزام عليك</p>
+  <a href="https://t.me/YOUR_BOT" class="btn-primary">ابدأ التجربة المجانية</a>
+</div>
+
+<footer>
+  <p>© 2026 Samer AI · جميع الحقوق محفوظة</p>
+  <p style="margin-top:8px;">تواصل معنا: <a href="https://t.me/YOUR_USERNAME" style="color:var(--accent);">تيليغرام</a></p>
+</footer>
+
+</body>
+</html>
